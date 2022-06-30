@@ -20,6 +20,13 @@ async function run(){
     try{
         await client.connect();
         const usersCollection = client.db("practice").collection("users");
+       // get data from server
+       app.get('/user', async(req, res)=>{
+            const query = {};
+            const cursor = usersCollection.find(query);
+            const users = await cursor.toArray();
+            res.send(users);
+       });
         // post or add new user
         app.post('/user', async(req, res)=>{
             const newUser = req.body;
