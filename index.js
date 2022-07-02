@@ -2,6 +2,7 @@ const express = require('express')
 const app = express();
 const port = process.env.port || 5000;
 const cors = require('cors');
+const ObjectId = require('mongodb').ObjectId;
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
@@ -20,7 +21,7 @@ async function run(){
     try{
         await client.connect();
         const usersCollection = client.db("practice").collection("users");
-       // get data from server
+       // get data from server get existing all users
        app.get('/user', async(req, res)=>{
             const query = {};
             const cursor = usersCollection.find(query);
@@ -32,6 +33,13 @@ async function run(){
             const newUser = req.body;
             console.log('adding new user', newUser);
             const result = await usersCollection.insertOne(newUser);
+            res.send(result);
+        });
+        // delete a user
+        app.delete('/user/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await usersCollection.deleteOne(query);
             res.send(result);
         })
 
