@@ -41,6 +41,7 @@ async function run(){
             const result = await usersCollection.insertOne(newUser);
             res.send(result);
         });
+        //update user
         app.put('/user/:id', async(req, res)=>{
             const id = req.params.id;
             const updatedUser = req.body;
@@ -63,12 +64,10 @@ async function run(){
             const result = await usersCollection.deleteOne(query);
             res.send(result);
         })
-
-    }finally{
-        // await client.close(); // after get some result need to close then use close
-
     }
-
+    finally{
+        // await client.close(); // after get some result need to close then use close
+    }
 }
 run().catch(console.dir);
 
